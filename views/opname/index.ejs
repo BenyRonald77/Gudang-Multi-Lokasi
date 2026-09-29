@@ -1,0 +1,81 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Stock Opname</h1>
+    <p class="page-desc">Hitung fisik stok per gudang dan catat selisih terhadap stok sistem.</p>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <h2>Mulai Sesi Opname Baru</h2>
+    <% if (daftarGudang.length === 0) { %>
+      <div class="empty-state">
+        <p>Belum ada gudang untuk diopname.</p>
+        <a class="btn" href="/gudang">Tambah Gudang</a>
+      </div>
+    <% } else { %>
+      <form class="form-vertikal" method="post" action="/opname">
+        <div class="field">
+          <label for="gudang_id">Gudang</label>
+          <select id="gudang_id" name="gudang_id" required>
+            <option value="">Pilih gudang</option>
+            <% daftarGudang.forEach(function (g) { %>
+              <option value="<%= g.id %>"><%= g.nama %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="field">
+          <label for="tanggal">Tanggal Opname</label>
+          <input type="date" id="tanggal" name="tanggal" required>
+        </div>
+        <div class="field">
+          <label for="catatan">Catatan (opsional)</label>
+          <input type="text" id="catatan" name="catatan" placeholder="contoh: opname akhir bulan">
+        </div>
+        <button type="submit" class="btn">Mulai Opname</button>
+      </form>
+    <% } %>
+  </div>
+
+  <div class="panel">
+    <h2>Riwayat Sesi Opname</h2>
+    <% if (daftarOpname.length === 0) { %>
+      <div class="empty-state">
+        <p>Belum ada sesi opname.</p>
+      </div>
+    <% } else { %>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Gudang</th>
+              <th>Status</th>
+              <th class="aksi">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% daftarOpname.forEach(function (o) { %>
+              <tr>
+                <td><%= o.tanggal %></td>
+                <td><%= o.nama_gudang %></td>
+                <td>
+                  <% if (o.status === 'selesai') { %>
+                    <span class="badge badge-selesai">Selesai</span>
+                  <% } else { %>
+                    <span class="badge badge-draft">Draft</span>
+                  <% } %>
+                </td>
+                <td class="aksi"><a class="btn btn-secondary btn-kecil" href="/opname/<%= o.id %>">Buka</a></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

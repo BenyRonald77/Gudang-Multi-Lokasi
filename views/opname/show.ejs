@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Opname <%= opname.nama_gudang %></h1>
+    <p class="page-desc">
+      Tanggal <%= opname.tanggal %> -
+      <% if (opname.status === 'selesai') { %>
+        <span class="badge badge-selesai">Selesai</span>
+      <% } else { %>
+        <span class="badge badge-draft">Draft</span>
+      <% } %>
+    </p>
+  </div>
+  <a class="btn btn-secondary" href="/opname">Kembali ke Daftar</a>
+</div>
+
+<div class="panel">
+  <% if (baris.length === 0) { %>
+    <div class="empty-state">
+      <p>Tidak ada barang untuk dihitung pada sesi ini.</p>
+    </div>
+  <% } else { %>
+    <form method="post" action="/opname/<%= opname.id %>/finalisasi" id="form-opname">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Barang</th>
+              <th>Satuan</th>
+              <th class="angka">Stok Sistem</th>
+              <th class="angka">Stok Fisik</th>
+              <th class="angka">Selisih</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% baris.forEach(function (b) { %>
+              <tr>
+                <td><%= b.sku %></td>
+                <td><%= b.nama_barang %></td>
+                <td><%= b.satuan %></td>
+                <td class="angka"><%= b.stok_sistem %></td>
+                <td class="angka">
+                  <% if (opname.status === 'draft') { %>
+                    <input type="number" step="1" style="text-align:right; max-width: 110px;"
+                      name="baris_<%= b.id %>"
+                      value="<%= b.stok_fisik === null ? '' : b.stok_fisik %>"
+                      aria-label="Stok fisik <%= b.nama_barang %>">
+                  <% } else { %>
+                    <%= b.stok_fisik %>
+                  <% } %>
+                </td>
+                <td class="angka">
+                  <% if (b.selisih === null || b.selisih === undefined) { %>
+                    <span class="angka-netral">-</span>
+                  <% } else if (b.selisih > 0) { %>
+                    <span class="angka-positif">+<%= b.selisih %></span>
+                  <% } else if (b.selisih < 0) { %>
+                    <span class="angka-negatif"><%= b.selisih %></span>
+                  <% } else { %>
+                    <span class="angka-netral">0</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <% if (opname.status === 'draft') { %>
+        <div class="form-row section-gap">
+          <button type="submit" formaction="/opname/<%= opname.id %>/simpan" class="btn btn-secondary">Simpan Hitungan</button>
+          <button type="submit" formaction="/opname/<%= opname.id %>/finalisasi" class="btn"
+            onclick="return confirm('Finalisasi opname? Stok akan disesuaikan dan sesi ini terkunci.');">
+            Finalisasi Opname
+          </button>
+        </div>
+      <% } %>
+    </form>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
