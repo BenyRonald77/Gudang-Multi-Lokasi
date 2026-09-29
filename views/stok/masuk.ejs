@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Barang Masuk</h1>
+    <p class="page-desc">Catat penerimaan barang fisik ke satu gudang.</p>
+  </div>
+</div>
+
+<div class="panel" style="max-width: 480px;">
+  <% if (daftarGudang.length === 0 || daftarBarang.length === 0) { %>
+    <div class="empty-state">
+      <p>Data gudang dan barang harus ada terlebih dahulu sebelum mencatat barang masuk.</p>
+      <% if (daftarGudang.length === 0) { %><a class="btn" href="/gudang">Tambah Gudang</a><% } %>
+      <% if (daftarBarang.length === 0) { %><a class="btn btn-secondary" href="/barang">Tambah Barang</a><% } %>
+    </div>
+  <% } else { %>
+    <form class="form-vertikal" method="post" action="/stok/masuk">
+      <div class="field">
+        <label for="gudang_id">Gudang Tujuan</label>
+        <select id="gudang_id" name="gudang_id" required>
+          <option value="">Pilih gudang</option>
+          <% daftarGudang.forEach(function (g) { %>
+            <option value="<%= g.id %>"><%= g.nama %> (<%= g.kode %>)</option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="field">
+        <label for="barang_id">Barang</label>
+        <select id="barang_id" name="barang_id" required>
+          <option value="">Pilih barang</option>
+          <% daftarBarang.forEach(function (b) { %>
+            <option value="<%= b.id %>"><%= b.nama %> (<%= b.sku %>)</option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="field">
+        <label for="jumlah">Jumlah Diterima</label>
+        <input type="number" id="jumlah" name="jumlah" min="1" step="1" required>
+      </div>
+      <div class="field">
+        <label for="catatan">Catatan (opsional)</label>
+        <input type="text" id="catatan" name="catatan" placeholder="contoh: no. surat jalan">
+      </div>
+      <button type="submit" class="btn">Catat Barang Masuk</button>
+    </form>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

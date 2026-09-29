@@ -1,0 +1,73 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Stok</h1>
+    <p class="page-desc">Saldo stok terkini di seluruh gudang.</p>
+  </div>
+  <a class="btn" href="/stok/masuk">Catat Barang Masuk</a>
+</div>
+
+<form class="form-filter" method="get" action="/stok">
+  <div class="field">
+    <label for="gudang_id">Gudang</label>
+    <select id="gudang_id" name="gudang_id">
+      <option value="">Semua Gudang</option>
+      <% daftarGudang.forEach(function (g) { %>
+        <option value="<%= g.id %>" <%= filterGudangId === g.id ? 'selected' : '' %>><%= g.nama %></option>
+      <% }) %>
+    </select>
+  </div>
+  <div class="field">
+    <label for="barang_id">Barang</label>
+    <select id="barang_id" name="barang_id">
+      <option value="">Semua Barang</option>
+      <% daftarBarang.forEach(function (b) { %>
+        <option value="<%= b.id %>" <%= filterBarangId === b.id ? 'selected' : '' %>><%= b.nama %></option>
+      <% }) %>
+    </select>
+  </div>
+  <div class="field field-inline-submit">
+    <button type="submit" class="btn btn-secondary">Terapkan Filter</button>
+  </div>
+</form>
+
+<div class="panel">
+  <% if (daftarStok.length === 0) { %>
+    <div class="empty-state">
+      <p>Belum ada data stok untuk filter ini.</p>
+      <% if (!filterGudangId && !filterBarangId) { %>
+        <a class="btn" href="/stok/masuk">Catat Barang Masuk Pertama</a>
+      <% } %>
+    </div>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Gudang</th>
+            <th>SKU</th>
+            <th>Barang</th>
+            <th class="angka">Jumlah</th>
+            <th>Satuan</th>
+            <th class="aksi">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% daftarStok.forEach(function (s) { %>
+            <tr>
+              <td><%= s.nama_gudang %></td>
+              <td><%= s.sku %></td>
+              <td><%= s.nama_barang %></td>
+              <td class="angka"><%= s.jumlah %></td>
+              <td><%= s.satuan %></td>
+              <td class="aksi"><a class="btn btn-secondary btn-kecil" href="/kartu-stok/<%= s.barang_id %>">Kartu Stok</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
