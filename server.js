@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 
 const db = require('./src/db');
+const gudangRouter = require('./src/routes/gudang');
+const barangRouter = require('./src/routes/barang');
 
 const app = express();
 
@@ -44,6 +46,9 @@ app.get('/', (req, res) => {
     ringkasanPerGudang,
   });
 });
+
+app.use('/gudang', gudangRouter);
+app.use('/barang', barangRouter);
 
 app.use((req, res) => {
   res.status(404).render('404', { judulHalaman: 'Halaman tidak ditemukan', aktif: '' });

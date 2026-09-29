@@ -1,0 +1,68 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Gudang</h1>
+    <p class="page-desc">Data lokasi gudang yang dipakai untuk mencatat stok.</p>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <h2>Tambah Gudang</h2>
+    <form class="form-vertikal" method="post" action="/gudang">
+      <div class="field">
+        <label for="kode">Kode Gudang</label>
+        <input type="text" id="kode" name="kode" placeholder="contoh: GDG-JKT" required maxlength="20">
+      </div>
+      <div class="field">
+        <label for="nama">Nama Gudang</label>
+        <input type="text" id="nama" name="nama" placeholder="contoh: Gudang Jakarta Pusat" required maxlength="120">
+      </div>
+      <div class="field">
+        <label for="alamat">Alamat (opsional)</label>
+        <textarea id="alamat" name="alamat" rows="2" placeholder="Alamat lengkap gudang"></textarea>
+      </div>
+      <button type="submit" class="btn">Simpan Gudang</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>Daftar Gudang</h2>
+    <% if (daftarGudang.length === 0) { %>
+      <div class="empty-state">
+        <p>Belum ada gudang yang terdaftar.</p>
+      </div>
+    <% } else { %>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Kode</th>
+              <th>Nama</th>
+              <th>Alamat</th>
+              <th class="aksi">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% daftarGudang.forEach(function (g) { %>
+              <tr>
+                <td><%= g.kode %></td>
+                <td><%= g.nama %></td>
+                <td><%= g.alamat || '-' %></td>
+                <td class="aksi">
+                  <a class="btn btn-secondary btn-kecil" href="/gudang/<%= g.id %>/edit">Ubah</a>
+                  <form method="post" action="/gudang/<%= g.id %>/hapus" onsubmit="return confirm('Hapus gudang ini?');">
+                    <button type="submit" class="btn btn-bahaya btn-kecil">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

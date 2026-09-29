@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Ubah Gudang</h1>
+    <p class="page-desc"><%= gudang.nama %></p>
+  </div>
+</div>
+
+<div class="panel" style="max-width: 520px;">
+  <form class="form-vertikal" method="post" action="/gudang/<%= gudang.id %>">
+    <div class="field">
+      <label for="kode">Kode Gudang</label>
+      <input type="text" id="kode" name="kode" value="<%= gudang.kode %>" required maxlength="20">
+    </div>
+    <div class="field">
+      <label for="nama">Nama Gudang</label>
+      <input type="text" id="nama" name="nama" value="<%= gudang.nama %>" required maxlength="120">
+    </div>
+    <div class="field">
+      <label for="alamat">Alamat (opsional)</label>
+      <textarea id="alamat" name="alamat" rows="2"><%= gudang.alamat || '' %></textarea>
+    </div>
+    <div class="form-row">
+      <button type="submit" class="btn">Simpan Perubahan</button>
+      <a class="btn btn-secondary" href="/gudang">Batal</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

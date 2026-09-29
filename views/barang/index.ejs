@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Barang</h1>
+    <p class="page-desc">Data master barang yang dilacak stoknya.</p>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <h2>Tambah Barang</h2>
+    <form class="form-vertikal" method="post" action="/barang">
+      <div class="field">
+        <label for="sku">SKU</label>
+        <input type="text" id="sku" name="sku" placeholder="contoh: BRG-0001" required maxlength="40">
+      </div>
+      <div class="field">
+        <label for="nama">Nama Barang</label>
+        <input type="text" id="nama" name="nama" placeholder="contoh: Semen 40kg" required maxlength="150">
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="satuan">Satuan</label>
+          <input type="text" id="satuan" name="satuan" placeholder="contoh: sak, pcs, dus" required maxlength="30">
+        </div>
+        <div class="field">
+          <label for="kategori">Kategori (opsional)</label>
+          <input type="text" id="kategori" name="kategori" placeholder="contoh: Bahan Bangunan" maxlength="80">
+        </div>
+      </div>
+      <button type="submit" class="btn">Simpan Barang</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>Daftar Barang</h2>
+    <% if (daftarBarang.length === 0) { %>
+      <div class="empty-state">
+        <p>Belum ada barang yang terdaftar.</p>
+      </div>
+    <% } else { %>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Nama</th>
+              <th>Satuan</th>
+              <th>Kategori</th>
+              <th class="aksi">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% daftarBarang.forEach(function (b) { %>
+              <tr>
+                <td><%= b.sku %></td>
+                <td><a href="/kartu-stok/<%= b.id %>"><%= b.nama %></a></td>
+                <td><%= b.satuan %></td>
+                <td><%= b.kategori || '-' %></td>
+                <td class="aksi">
+                  <a class="btn btn-secondary btn-kecil" href="/barang/<%= b.id %>/edit">Ubah</a>
+                  <form method="post" action="/barang/<%= b.id %>/hapus" onsubmit="return confirm('Hapus barang ini?');">
+                    <button type="submit" class="btn btn-bahaya btn-kecil">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

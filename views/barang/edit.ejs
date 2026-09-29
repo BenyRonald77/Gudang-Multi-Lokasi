@@ -1,0 +1,37 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Ubah Barang</h1>
+    <p class="page-desc"><%= barang.nama %></p>
+  </div>
+</div>
+
+<div class="panel" style="max-width: 520px;">
+  <form class="form-vertikal" method="post" action="/barang/<%= barang.id %>">
+    <div class="field">
+      <label for="sku">SKU</label>
+      <input type="text" id="sku" name="sku" value="<%= barang.sku %>" required maxlength="40">
+    </div>
+    <div class="field">
+      <label for="nama">Nama Barang</label>
+      <input type="text" id="nama" name="nama" value="<%= barang.nama %>" required maxlength="150">
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label for="satuan">Satuan</label>
+        <input type="text" id="satuan" name="satuan" value="<%= barang.satuan %>" required maxlength="30">
+      </div>
+      <div class="field">
+        <label for="kategori">Kategori (opsional)</label>
+        <input type="text" id="kategori" name="kategori" value="<%= barang.kategori || '' %>" maxlength="80">
+      </div>
+    </div>
+    <div class="form-row">
+      <button type="submit" class="btn">Simpan Perubahan</button>
+      <a class="btn btn-secondary" href="/barang">Batal</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>
