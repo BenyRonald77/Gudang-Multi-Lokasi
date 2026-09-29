@@ -1,0 +1,96 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Transfer Barang</h1>
+    <p class="page-desc">Pindahkan barang dari satu gudang ke gudang lain. Stok asal dan tujuan berubah bersamaan dalam satu transaksi.</p>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <h2>Transfer Baru</h2>
+    <% if (daftarGudang.length < 2 || daftarBarang.length === 0) { %>
+      <div class="empty-state">
+        <p>Minimal 2 gudang dan 1 barang diperlukan untuk melakukan transfer.</p>
+      </div>
+    <% } else { %>
+      <form class="form-vertikal" method="post" action="/transfer">
+        <div class="field">
+          <label for="barang_id">Barang</label>
+          <select id="barang_id" name="barang_id" required>
+            <option value="">Pilih barang</option>
+            <% daftarBarang.forEach(function (b) { %>
+              <option value="<%= b.id %>"><%= b.nama %> (<%= b.sku %>)</option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="gudang_asal_id">Dari Gudang</label>
+            <select id="gudang_asal_id" name="gudang_asal_id" required>
+              <option value="">Pilih gudang asal</option>
+              <% daftarGudang.forEach(function (g) { %>
+                <option value="<%= g.id %>"><%= g.nama %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="field">
+            <label for="gudang_tujuan_id">Ke Gudang</label>
+            <select id="gudang_tujuan_id" name="gudang_tujuan_id" required>
+              <option value="">Pilih gudang tujuan</option>
+              <% daftarGudang.forEach(function (g) { %>
+                <option value="<%= g.id %>"><%= g.nama %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="jumlah">Jumlah</label>
+          <input type="number" id="jumlah" name="jumlah" min="1" step="1" required>
+        </div>
+        <div class="field">
+          <label for="catatan">Catatan (opsional)</label>
+          <input type="text" id="catatan" name="catatan" placeholder="contoh: alasan transfer">
+        </div>
+        <button type="submit" class="btn">Transfer Sekarang</button>
+      </form>
+    <% } %>
+  </div>
+
+  <div class="panel">
+    <h2>Riwayat Transfer</h2>
+    <% if (daftarTransfer.length === 0) { %>
+      <div class="empty-state">
+        <p>Belum ada riwayat transfer.</p>
+      </div>
+    <% } else { %>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Waktu</th>
+              <th>Barang</th>
+              <th>Dari</th>
+              <th>Ke</th>
+              <th class="angka">Jumlah</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% daftarTransfer.forEach(function (t) { %>
+              <tr>
+                <td><%= t.dibuat_pada %></td>
+                <td><a href="/kartu-stok/<%= t.barang_id %>"><%= t.nama_barang %></a></td>
+                <td><%= t.nama_asal %></td>
+                <td><%= t.nama_tujuan %></td>
+                <td class="angka"><%= t.jumlah %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
