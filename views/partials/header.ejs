@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= typeof judulHalaman !== 'undefined' ? judulHalaman + ' - Gudang Multi-Lokasi' : 'Gudang Multi-Lokasi' %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <nav class="app-nav">
+      <div class="app-nav__inner">
+        <a class="app-nav__brand" href="/">Gudang Multi-Lokasi</a>
+        <ul class="app-nav__links">
+          <li><a href="/" class="<%= aktif === 'dashboard' ? 'aktif' : '' %>">Dashboard</a></li>
+          <li><a href="/gudang" class="<%= aktif === 'gudang' ? 'aktif' : '' %>">Gudang</a></li>
+          <li><a href="/barang" class="<%= aktif === 'barang' ? 'aktif' : '' %>">Barang</a></li>
+          <li><a href="/stok" class="<%= aktif === 'stok' ? 'aktif' : '' %>">Stok</a></li>
+          <li><a href="/stok/masuk" class="<%= aktif === 'stok-masuk' ? 'aktif' : '' %>">Barang Masuk</a></li>
+          <li><a href="/transfer" class="<%= aktif === 'transfer' ? 'aktif' : '' %>">Transfer</a></li>
+          <li><a href="/opname" class="<%= aktif === 'opname' ? 'aktif' : '' %>">Opname</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main class="app-main">
+      <% if (typeof pesanSukses !== 'undefined' && pesanSukses) { %>
+        <div class="flash flash-sukses" role="status"><%= pesanSukses %></div>
+      <% } %>
+      <% if (typeof pesanError !== 'undefined' && pesanError) { %>
+        <div class="flash flash-error" role="alert"><%= pesanError %></div>
+      <% } %>

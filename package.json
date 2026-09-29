@@ -1,0 +1,15 @@
+{
+  "name": "gudang-multi-lokasi",
+  "version": "1.0.0",
+  "description": "Aplikasi manajemen stok multi-gudang: transfer atomik, stock opname, dan kartu stok per barang",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1"
+  }
+}

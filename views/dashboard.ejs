@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Dashboard</h1>
+    <p class="page-desc">Ringkasan stok di seluruh gudang.</p>
+  </div>
+</div>
+
+<div class="stat-row">
+  <div class="stat-card">
+    <p class="stat-label">Jumlah Gudang</p>
+    <p class="stat-value"><%= jumlahGudang %></p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-label">Jumlah Jenis Barang</p>
+    <p class="stat-value"><%= jumlahBarang %></p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-label">Total Unit Stok (semua gudang)</p>
+    <p class="stat-value"><%= totalUnitStok %></p>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Stok per Gudang</h2>
+  <% if (ringkasanPerGudang.length === 0) { %>
+    <div class="empty-state">
+      <p>Belum ada data gudang.</p>
+      <a class="btn" href="/gudang">Tambah Gudang Pertama</a>
+    </div>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nama Gudang</th>
+            <th class="angka">Jenis Barang Tersedia</th>
+            <th class="angka">Total Unit</th>
+            <th class="aksi">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% ringkasanPerGudang.forEach(function (g) { %>
+            <tr>
+              <td><%= g.kode %></td>
+              <td><%= g.nama %></td>
+              <td class="angka"><%= g.jumlah_jenis_barang %></td>
+              <td class="angka"><%= g.total_unit %></td>
+              <td class="aksi"><a class="btn btn-secondary btn-kecil" href="/stok?gudang_id=<%= g.id %>">Lihat Stok</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>
