@@ -1,0 +1,72 @@
+<%
+const labelTipe = {
+  masuk: 'Barang Masuk',
+  keluar: 'Barang Keluar',
+  transfer_keluar: 'Transfer Keluar',
+  transfer_masuk: 'Transfer Masuk',
+  penyesuaian_opname: 'Penyesuaian Opname',
+};
+%>
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <div>
+    <h1>Kartu Stok: <%= barang.nama %></h1>
+    <p class="page-desc">SKU <%= barang.sku %> - Satuan <%= barang.satuan %> - Total stok seluruh gudang: <strong><%= totalStokBarang %></strong></p>
+  </div>
+</div>
+
+<form class="form-filter" method="get" action="/kartu-stok/<%= barang.id %>">
+  <div class="field">
+    <label for="gudang_id">Gudang</label>
+    <select id="gudang_id" name="gudang_id">
+      <option value="">Semua Gudang</option>
+      <% daftarGudang.forEach(function (g) { %>
+        <option value="<%= g.id %>" <%= filterGudangId === g.id ? 'selected' : '' %>><%= g.nama %></option>
+      <% }) %>
+    </select>
+  </div>
+  <div class="field field-inline-submit">
+    <button type="submit" class="btn btn-secondary">Terapkan Filter</button>
+  </div>
+</form>
+
+<div class="panel">
+  <h2>Riwayat Pergerakan</h2>
+  <% if (pergerakan.length === 0) { %>
+    <div class="empty-state">
+      <p>Belum ada pergerakan stok untuk barang ini<% if (filterGudangId) { %> di gudang terpilih<% } %>.</p>
+    </div>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Waktu</th>
+            <th>Gudang</th>
+            <th>Tipe</th>
+            <th class="angka">Perubahan</th>
+            <th class="angka">Saldo Setelah</th>
+            <th>Catatan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pergerakan.forEach(function (k) { %>
+            <tr>
+              <td><%= k.dibuat_pada %></td>
+              <td><%= k.nama_gudang %></td>
+              <td><%= labelTipe[k.tipe] || k.tipe %></td>
+              <td class="angka <%= k.jumlah_perubahan > 0 ? 'angka-positif' : (k.jumlah_perubahan < 0 ? 'angka-negatif' : 'angka-netral') %>">
+                <%= k.jumlah_perubahan > 0 ? '+' + k.jumlah_perubahan : k.jumlah_perubahan %>
+              </td>
+              <td class="angka"><%= k.saldo_setelah %></td>
+              <td><%= k.catatan || '-' %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

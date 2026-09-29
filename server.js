@@ -7,6 +7,7 @@ const barangRouter = require('./src/routes/barang');
 const stokRouter = require('./src/routes/stok');
 const transferRouter = require('./src/routes/transfer');
 const opnameRouter = require('./src/routes/opname');
+const kartuStokRouter = require('./src/routes/kartuStok');
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use('/barang', barangRouter);
 app.use('/stok', stokRouter);
 app.use('/transfer', transferRouter);
 app.use('/opname', opnameRouter);
+app.use('/kartu-stok', kartuStokRouter);
 
 app.use((req, res) => {
   res.status(404).render('404', { judulHalaman: 'Halaman tidak ditemukan', aktif: '' });
